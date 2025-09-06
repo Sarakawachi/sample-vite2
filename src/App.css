@@ -1,0 +1,18 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.study-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.add-button {
+  margin-left: 85px;
+}
+.error-message {
+  color: red;
+  margin-top: 12px;
+}
