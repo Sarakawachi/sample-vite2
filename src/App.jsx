@@ -10,11 +10,12 @@ function App() {
   const [sumTime, setSumTime] = useState();
   const isError = !titleText || !timeText;
   const [loading, setLoading] = useState(false);
-
+  const TABLE_NAME = "study-record";
+  
   useEffect(() => {
     const getRecord = async () => {
       setLoading(true);
-      const { data } = await supabase.from("study-record").select();
+      const { data } = await supabase.from(TABLE_NAME).select();
       console.log(data);
       setRecords(data);
       setLoading(false);
@@ -26,7 +27,7 @@ function App() {
   const changeTitleText = (e) => setTitleText(e.target.value);
   const changeTimeText = (e) => setTimeText(e.target.value);
 
-  const addRecord = () => {
+  const addRecord = async () => {
     const displayRecord = {
       title: titleText,
       time: timeText,
@@ -35,6 +36,7 @@ function App() {
       setErrorMessage("入力されていない項目があります");
       return;
     }
+    await supabase.from(TABLE_NAME).insert(displayRecord);
     setRecords([...records, displayRecord]);
 
     setTitleText("");
