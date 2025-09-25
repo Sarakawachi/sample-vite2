@@ -79,7 +79,7 @@ function App() {
         <p>Loading</p>
       ) : (
         <>
-          <h1>学習記録一覧</h1>
+          <h3>学習記録一覧</h3>
           <div className="form">
             <div className="study-content">
               <p>学習内容</p>
