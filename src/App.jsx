@@ -11,16 +11,20 @@ function App() {
   const isError = !titleText || !timeText;
   const [loading, setLoading] = useState(false);
   const TABLE_NAME = "study-record";
-  
-  useEffect(() => {
-    const getRecord = async () => {
-      setLoading(true);
-      const { data } = await supabase.from(TABLE_NAME).select();
-      console.log(data);
-      setRecords(data);
-      setLoading(false);
-    };
 
+  const getRecord = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from(TABLE_NAME).select();
+    if (error) {
+      console.error("データ取得エラー");
+      return;
+    }
+
+    setRecords(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
     getRecord();
   }, []);
 
@@ -36,12 +40,26 @@ function App() {
       setErrorMessage("入力されていない項目があります");
       return;
     }
-    await supabase.from(TABLE_NAME).insert(displayRecord);
-    setRecords([...records, displayRecord]);
+    const { error } = await supabase.from(TABLE_NAME).insert(displayRecord);
+    if (error) {
+      console.error("データ追加エラー");
+      return;
+    }
+    await getRecord();
 
     setTitleText("");
     setTimeText(0);
     setErrorMessage("");
+  };
+
+  const deleteTodo = async (id) => {
+    console.log("id", id);
+    const { error } = await supabase.from(TABLE_NAME).delete().eq("id", id);
+    if (error) {
+      console.error("データ削除エラー");
+      return;
+    }
+    await getRecord();
   };
 
   useEffect(() => {
@@ -61,7 +79,7 @@ function App() {
         <p>Loading</p>
       ) : (
         <>
-          <h1>学習記録一覧</h1>
+          <h3>学習記録一覧</h3>
           <div className="form">
             <div className="study-content">
               <p>学習内容</p>
@@ -85,7 +103,16 @@ function App() {
           <div className="content-list">
             <ul>
               {records.map((record, index) => (
-                <li key={index}>{`${record.title} ${record.time}時間`}</li>
+                <>
+                  <li key={index}>{`${record.title} ${record.time}時間`}</li>
+                  <button
+                    onClick={() => {
+                      deleteTodo(record.id);
+                    }}
+                  >
+                    delete
+                  </button>
+                </>
               ))}
             </ul>
           </div>
