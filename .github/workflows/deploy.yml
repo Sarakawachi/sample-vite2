@@ -1,6 +1,6 @@
 name: Deploy App
 
-on: 
+on:
   push: #push時にactionsが実行される
   workflow_dispatch: #ワークフローを手動で実行できるイベント
 
@@ -29,10 +29,32 @@ jobs:
           name: dist-files
           path: dist/
 
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY }}
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

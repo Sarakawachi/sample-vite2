@@ -79,40 +79,59 @@ function App() {
         <p>Loading</p>
       ) : (
         <>
-          <h3>学習記録一覧</h3>
+          <h3 data-testid="title">学習記録一覧</h3>
           <div className="form">
             <div className="study-content">
               <p>学習内容</p>
-              <input type="text" value={titleText} onChange={changeTitleText} />
+              <input
+                data-testid="input-title"
+                type="text"
+                value={titleText}
+                onChange={changeTitleText}
+              />
             </div>
             <div className="study-content">
               <p>学習時間</p>
-              <input type="number" value={timeText} onChange={changeTimeText} />
+              <input
+                data-testid="input-time"
+                type="number"
+                value={timeText}
+                onChange={changeTimeText}
+              />
               <p>時間</p>
             </div>
-            <button className="add-button" onClick={addRecord}>
+            <button
+              data-testid="add-button"
+              className="add-button"
+              onClick={addRecord}
+            >
               登録
             </button>
           </div>
-          <div className="error-message"> {errorMessage}</div>
+          <div data-testid="error-message" className="error-message">
+            {errorMessage}
+          </div>
           <div>
-            <p>入力されている学習内容：{titleText}</p>
-            <p>学習内入力されている時間：{timeText}時間</p>
+            <p data-testid="displayed-title">
+              入力されている学習内容：{titleText}
+            </p>
+            <p data-testid="displayed-time">
+              学習内入力されている時間：{timeText}時間
+            </p>
           </div>
 
           <div className="content-list">
             <ul>
-              {records.map((record, index) => (
-                <>
-                  <li key={index}>{`${record.title} ${record.time}時間`}</li>
+              {records.map((record) => (
+                <li key={record.id}>
+                  <span data-testid="record-item">{`${record.title} ${record.time}時間`}</span>
                   <button
-                    onClick={() => {
-                      deleteTodo(record.id);
-                    }}
+                    data-testid="delete-button"
+                    onClick={() => deleteTodo(record.id)}
                   >
                     delete
                   </button>
-                </>
+                </li>
               ))}
             </ul>
           </div>
