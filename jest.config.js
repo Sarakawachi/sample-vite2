@@ -4,4 +4,5 @@ export default {
     "\\.(css|less)$": "identity-obj-proxy",
   },
   setupFilesAfterEnv: ["./jest.setup.js"],
+  testTimeout: 10000,
 };

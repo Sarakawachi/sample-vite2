@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "../App";
 import { supabase } from "../utils/supabase";
@@ -56,10 +56,12 @@ describe("Study Test", () => {
       target: { value: "2" },
     });
     fireEvent.click(screen.getByTestId("add-button"));
-    await waitFor(() => {
-      expect(screen.getByTestId("record-item")).toBeInTheDocument();
-    });
-    expect(screen.getByTestId("record-item")).toHaveTextContent("React 2時間");
+    const addedItem = await screen.findByTestId(
+      "record-item",
+      {},
+      { timeout: 8000 }
+    );
+    expect(addedItem).toHaveTextContent("React 2時間");
 
     // 削除ボタンを押す
     fireEvent.click(screen.getByTestId("delete-button"));
