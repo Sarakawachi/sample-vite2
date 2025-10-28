@@ -1,12 +1,99 @@
-# React + Vite
+## sample-vite2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vite + React をベースにしたフロントエンドプロジェクトです。Supabase を利用したバックエンド連携、Jest + Testing Library によるユニットテスト、Firebase Hosting へのデプロイを想定しています。
 
-Currently, two official plugins are available:
+### 主な技術スタック
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Build/Dev**: Vite
+- **UI**: React 19
+- **Auth/DB**: Supabase (`@supabase/supabase-js`)
+- **Test**: Jest 30, Testing Library
+- **Lint**: ESLint 9
+- **Hosting**: Firebase Hosting
 
-## Expanding the ESLint configuration
+## セットアップ
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. 依存関係をインストール
+
+```bash
+npm install
+```
+
+2. 環境変数を設定（プロジェクト直下に `.env` を作成）
+
+```bash
+VITE_SUPABASE_URL=SupabaseプロジェクトURL
+VITE_SUPABASE_KEY=Supabaseキー
+```
+
+補足:
+
+- `vite.config.js` で `dotenv` を読み込み、`VITE_SUPABASE_URL` と `VITE_SUPABASE_KEY` をビルド時に埋め込みます。
+- Supabase のプロジェクト作成と API キー取得は公式ドキュメントを参照してください。
+
+## 開発
+
+- 開発サーバー起動
+
+```bash
+npm run dev
+```
+
+- Lint 実行
+
+```bash
+npm run lint
+```
+
+## ビルド & プレビュー
+
+- 本番ビルド
+
+```bash
+npm run build
+```
+
+- ビルド結果のローカルプレビュー
+
+```bash
+npm run preview
+```
+
+## テスト
+
+- ユニットテスト実行（Jest + @testing-library）
+
+```bash
+npm test
+```
+
+## デプロイ（Firebase Hosting）
+
+前提: Firebase CLI がインストール済みで `firebase login` 済み。
+
+- 直接デプロイ
+
+```bash
+npm run build
+firebase deploy
+```
+
+- Makefile 経由
+
+```bash
+make deploy
+```
+
+
+## プロジェクト構成（抜粋）
+
+```
+src/
+  App.jsx
+  main.jsx
+  utils/
+    supabase.js        # Supabase クライアント初期化
+  tests/
+    *.spec.js          # Jest テスト
+```
+
